@@ -1,59 +1,83 @@
 ﻿@page
 @model AC1_M9UF1.Pages.FormModel
 @{
-    Validation.RequireField("companyname", "Company name is required.");
-    Validation.RequireField("contactname", "Contact name is required.");
-    Validation.RequireField("employees", "Employee count is required.");
-    Validation.Add("employees", Validator.Integer());
-
-    FormModel form = new FormModel();
-
-    if (form.IsPost)
+    
+    if (Request.Method == "POST")
     {
-        string companyname = Request.Form["companyname"];
-        string contactname = Request.Form["contactname"];
-        int employeecount = Convert.ToInt32(Request.Form["employees"]);
 
-        <text>
-                  You entered: <br />
-                  Company Name: @companyname <br />
-                  Contact Name: @contactname <br />
-                  Employee Count: @employeecount <br />
-        </text>
+        if (string.IsNullOrEmpty(Request.Form["CompanyName"]))
+        {
+            ModelState.AddModelError("CompanyName", "Company Name is required.");
+        }
+
+        if (string.IsNullOrEmpty(Request.Form["ContactName"]))
+        {
+            ModelState.AddModelError("ContactName", "Contact Name is required.");
+        }
+
+        if (string.IsNullOrEmpty(Request.Form["Employees"]))
+        {
+            ModelState.AddModelError("Employees", "Employee Count is required.");
+        }
+
+        if (!int.TryParse(Request.Form["Employees"], out int value))
+        {
+            ModelState.AddModelError("Employees", "Employee Count must be a number.");
+        }
+        else
+        {
+            if (value <= 0)
+            {
+                ModelState.AddModelError("Employees", "Employee Count must be a natural number.");
+            }
+        }
+
+        if (ModelState.IsValid)
+		{
+            var companyname = Request.Form["CompanyName"];
+            var contactname = Request.Form["ContactName"];
+            var employeecount = Request.Form["Employees"];
+
+			<text>
+				You entered: <br />
+				Company Name: @companyname <br />
+				Contact Name: @contactname <br />
+				Employee Count: @employeecount <br />
+			</text>
+		}
     }
 }
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Customer Form</title>
-    </head>
-    <body>
-        <form method="post">
-            <fieldset>
-                <legend>Add Customer</legend>
-                <div>
-                  <label for="CompanyName">Company Name:</label>
-                  <input type="text" name="CompanyName"
-                         value="@Request.Form["companyname"]"  />
-                        @Html.ValidationMessage("companyname")
-                </div>
-                <div>
-                 <label for="ContactName">Contact Name:</label>
-                 <input type="text" name="ContactName"
-                        value="@Request.Form["contactname"]" />
-                        @Html.ValidationMessage("contactname")
-                </div>
-                <div>
-                 <label for="Employees">Employee Count:</label>
-                 <input type="text" name="Employees"
-                        value="@Request.Form["employees"]" />
-                        @Html.ValidationMessage("employees")
-                </div>
-                <div>
-                  <label>&nbsp;</label>
-                  <input type="submit" value="Submit" class="submit" asp-action="OnPost" />
-                </div>
-            </fieldset>
-        </form>
-    </body>
-</html>
+<head>
+    <title>Customer Form</title>
+</head>
+<body>
+    <form method="post">
+        <fieldset>
+            <legend>Add Customer</legend>
+            <div>
+                <label for="CompanyName">Company Name:</label>
+                <input type="text" name="CompanyName"
+                       value="@Request.Form["CompanyName"]" />
+                @Html.ValidationMessage("companyname")
+            </div>
+            <div>
+                <label for="ContactName">Contact Name:</label>
+                <input type="text" name="ContactName"
+                       value="@Request.Form["ContactName"]" />
+                @Html.ValidationMessage("contactname")
+            </div>
+            <div>
+                <label for="Employees">Employee Count:</label>
+                <input type="text" name="Employees"
+                       value="@Request.Form["Employees"]" />
+                @Html.ValidationMessage("employees")
+            </div>
+            <div>
+                <label>&nbsp;</label>
+                <input type="submit" value="Submit" class="submit" />
+            </div>
+        </fieldset>
+    </form>
+</body>
