@@ -24,14 +24,23 @@ namespace AC1_M9UF1.Pages.MyForm
             Customer = customers.ToList();
         }
 
-        public IActionResult CleanDatabase()
+        public IActionResult OnGetDeleteData(int id)
+        {
+            ICustomerDAO customerDAO = new CustomerDAO(NpgsqlUtils.OpenConnection());
+            customerDAO.DeleteCustomer(id);
+
+            return RedirectToPage();
+        }
+
+        public IActionResult OnGetCleanDatabase()
         {
             ICustomerDAO customerDAO = new CustomerDAO(NpgsqlUtils.OpenConnection());
             foreach (var customer in customerDAO.GetAllCustomers())
             {
                 customerDAO.DeleteCustomer(customer.Id);
             }
-            return Page();
+
+            return RedirectToPage();
         }
     }
 }

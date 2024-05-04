@@ -14,6 +14,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Customer[0].EmployeesCount)
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -29,9 +30,13 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.EmployeesCount)
                 </td>
+                <td>
+                    <a asp-page-handler="DeleteData" asp-route-id="@item.Id">Delete</a>
+                </td>
             </tr>
         }
     </tbody>
+    <a asp-page-handler="CleanDatabase">Clean Database</a>
     <br />
-    <a asp-action="CleanDatabase">Clean Database</a>
+    <a asp-page="/MyForm/Form">Return to Form</a>
 </table>
