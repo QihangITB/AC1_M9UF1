@@ -1,0 +1,42 @@
+﻿@page
+@model AC1_M9UF1.Pages.MyForm.ListModel
+
+<h1>CloudDB Data</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer[0].CompanyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer[0].ContactName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer[0].EmployeesCount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Customer)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeesCount)
+                </td>
+                <td>
+                    <a asp-page-handler="DeleteData" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <a asp-page-handler="CleanDatabase">Clean Database</a>
+    <br />
+    <a asp-page="/MyForm/Form">Return to Form</a>
+</table>
