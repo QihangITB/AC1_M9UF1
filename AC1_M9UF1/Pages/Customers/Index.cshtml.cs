@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AC1_M9UF1.Data;
 using AC1_M9UF1.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AC1_M9UF1.Pages.Customers
 {
@@ -21,9 +22,19 @@ namespace AC1_M9UF1.Pages.Customers
 
         public IList<Customer> Customer { get;set; } = default!;
 
+        [BindProperty(SupportsGet = true)]
+        public string? SearchString { get; set; }
+
         public async Task OnGetAsync()
         {
-            Customer = await _context.Customer.ToListAsync();
+            var movies = from m in _context.Customer
+                         select m;
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                movies = movies.Where(s => s.CompanyName.Contains(SearchString));
+            }
+
+            Customer = await movies.ToListAsync();
         }
     }
 }

@@ -1,0 +1,55 @@
+﻿@page
+@model AC1_M9UF1.Pages.MyForm.FormModel
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Form</title>
+</head>
+<body>
+    <form method="post">
+        <fieldset>
+            <legend>Add Customer</legend>
+            <div>
+                <label for="CompanyName">Company Name:</label>
+                <input type="text" name="CompanyName"
+                       value="" />
+                @Html.ValidationMessage("CompanyName")
+            </div>
+            <div>
+                <label for="ContactName">Contact Name:</label>
+                <input type="text" name="ContactName"
+                       value="" />
+                @Html.ValidationMessage("ContactName")
+            </div>
+            <div>
+                <label for="Employees">Employee Count:</label>
+                <input type="text" name="Employees"
+                       value="" />
+                @Html.ValidationMessage("Employees")
+            </div>
+            <div>
+                <label>&nbsp;</label>
+                <input type="submit" value="Submit" class="submit" />
+            </div>
+        </fieldset>
+    </form>
+    <br />
+    @{
+        ViewData["Title"] = "MyForm";
+
+        if (Request.Method == "POST")
+        {
+            if (ModelState.IsValid)
+            {
+                <text>
+                    You entered: <br />
+                    Company Name: @Request.Form["CompanyName"] <br />
+                    Contact Name: @Request.Form["ContactName"] <br />
+                    Employee Count: @Request.Form["Employees"] <br />
+                </text>
+            }
+        }
+    }
+    <br />
+    <a asp-page="./List">List of the data</a>
+</body>
